@@ -1,2 +1,71 @@
 # ServiceWorkerUpdateListener
 A Javascript ES6 class for listening for Service Worker update events.
+
+## Installation
+
+### Manual:
+1. Download `ServiceWorkerUpdateListener.js` or the minimized `ServiceWorkerUpdateListener.min.js` from this repository.
+2. Include the script on your HTML page.
+
+```javascript
+<script type="text/javascript" src="ServiceWorkerUpdateListener.js"></script>
+```
+3. Open the script of your Service Worker, often called `sw.js` or `service-worker.js`.
+4. Make sure the code below is added. This will allow us to skip waiting from the front-end, using the `listener.activate()` method.
+
+```javascript
+self.addEventListener('message', event => {
+    if (event.data === 'skipWaiting') return skipWaiting();
+});
+```
+
+## Usage
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ServiceWorkerUpdateListener</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
+	<meta name="description" content="A Javascript ES6 class for listening for Service Worker update events.">
+</head>
+<body>
+<div id="status">No update found.</div>
+<script type="text/javascript" src="ServiceWorkerUpdateListener.js"></script>
+<script>
+// Create a new ServiceWorkerUpdateListener.
+var listener = new ServiceWorkerUpdateListener();
+
+// Called whenever an event of type updateinstalling is fired; 
+// It is fired any time the ServiceWorkerRegistration.installing property acquires a new installing worker.
+listener.onupdateinstalling = installingevent => {
+    document.getElementById('status').innerHTML = 'Service Worker update found and installing ...';
+}
+
+// Called whenever an event of type updatewaiting is fired; 
+// It is fired any time the ServiceWorkerRegistration.waiting property acquires a new waiting worker.
+listener.onupdatewaiting = waitingevent => {
+    var statusElement = document.getElementById('status');
+    statusElement.innerHTML = 'Service Worker update available, click here to update.';
+    statusElement.style.cursor = 'pointer';
+    statusElement.addEventListener('click', clickevent => listener.activate(waitingevent.detail.serviceWorker));
+}
+
+// Called whenever an event of type updateready is fired; 
+// It is fired any time the document's associated ServiceWorkerRegistration acquires a new active worker;
+// We need to update the window to run the new Service Worker.
+listener.onupdateready = event => window.location.reload();
+
+// Create a new ServiceWorkerRegistration and add it to the listener.
+navigator.serviceWorker.register('/padel/service-worker.js').then(registration => listener.addRegistration(registration));
+</script>
+</body>
+</html>
+```
+
+## Donate
+
+If you have been enjoying my free Javascript code, please consider showing your support by buying me a coffee through the link below. Thanks in advance!
+
+<a href="https://www.buymeacoffee.com/markvanwijnen" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" height="60px" alt="Buy Me A Coffee"></a>
