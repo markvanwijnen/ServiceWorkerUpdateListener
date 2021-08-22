@@ -5,7 +5,7 @@ A Javascript ES6 class for listening for Service Worker update events.
 
 ### Manual:
 1. Download `ServiceWorkerUpdateListener.js` or the minimized `ServiceWorkerUpdateListener.min.js` from this repository.
-2. Include it on your HTML page.
+2. Include the script on your HTML page.
 
 ```javascript
 <script type="text/javascript" src="ServiceWorkerUpdateListener.js"></script>
