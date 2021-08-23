@@ -85,7 +85,7 @@ listener.onupdatewaiting = waitingevent => {
 listener.onupdateready = event => window.location.reload();
 
 // Create a new ServiceWorkerRegistration and add it to the listener.
-navigator.serviceWorker.register('/padel/service-worker.js').then(registration => listener.addRegistration(registration));
+navigator.serviceWorker.register('/service-worker.js').then(registration => listener.addRegistration(registration));
 </script>
 </body>
 </html>
