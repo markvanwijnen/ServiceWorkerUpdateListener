@@ -1,9 +1,35 @@
 # ServiceWorkerUpdateListener
-A Javascript ES6 class for listening for Service Worker update events.
+The `ServiceWorkerUpdateListener` interface extends the Service Worker API by providing a convenient way to receive update events when `ServiceWorkerRegistration` acquires new service workers.
+
+## Properties
+_The `ServiceWorkerUpdateListener` interface inherits properties from its parent, [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget)._
+
+### Event handlers
+_All of the events contain the detail property containing the [ServiceWorker](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker#event_handlers) (`event.detail.serviceWorker`) and the [ServiceWorkerRegistration](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration) (`event.detail.registration`) that caused the event to fire._
+
+#### ServiceWorkerUpdateListener.onupdateinstalling
+An [EventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventListener) property called whenever an event of type updateinstalling is fired; it is fired any time the `ServiceWorkerRegistration.installing` property acquires a new service worker.
+
+#### ServiceWorkerUpdateListener.onupdatewaiting
+An [EventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventListener) property called whenever an event of type updatewaiting is fired; it is fired any time the `ServiceWorkerRegistration.waiting` property acquires a new service worker.
+
+#### ServiceWorkerUpdateListener.onupdateready
+An [EventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventListener) property called whenever an event of type updateready is fired; it is fired any time the document's associated [ServiceWorkerRegistration](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration) acquires a new service worker.
+
+## Methods
+_The `ServiceWorkerUpdateListener` interface inherits methods from its parent, [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget)._
+
+#### ServiceWorkerUpdateListener.addRegistration( ServiceWorkerRegistration )
+Adds a registration to start listening for update events
+
+#### ServiceWorkerUpdateListener.removeRegistration( ServiceWorkerRegistration )
+Removes a registration to stop listening for update events
+
+#### ServiceWorkerUpdateListener.skipWaiting( ServiceWorker )
+Forces a service worker to move from the `waiting` state to the `active` state. 
 
 ## Installation
 
-### Manual:
 1. Download `ServiceWorkerUpdateListener.js` or the minimized `ServiceWorkerUpdateListener.min.js` from this repository.
 2. Include the script on your HTML page.
 
@@ -19,7 +45,8 @@ self.addEventListener('message', event => {
 });
 ```
 
-## Usage
+## Example
+This code snippet will listen for update events. Whenever an update becomes available the text `Service Worker update available, click here to update` is shown on screen. When the user clicks on it, the new service worker immediately becomes available to all clients by reloading the window.
 
 ```html
 <!DOCTYPE html>
@@ -49,7 +76,7 @@ listener.onupdatewaiting = waitingevent => {
     var statusElement = document.getElementById('status');
     statusElement.innerHTML = 'Service Worker update available, click here to update.';
     statusElement.style.cursor = 'pointer';
-    statusElement.addEventListener('click', clickevent => listener.activate(waitingevent.detail.serviceWorker));
+    statusElement.addEventListener('click', clickevent => listener.skipWaiting(waitingevent.detail.serviceWorker));
 }
 
 // Called whenever an event of type updateready is fired; 
