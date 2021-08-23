@@ -1,6 +1,10 @@
 # ServiceWorkerUpdateListener
 The `ServiceWorkerUpdateListener` interface extends the Service Worker API by providing a convenient way to receive update events when `ServiceWorkerRegistration` acquires new service workers.
 
+With this helper it is now easier then ever to present an `Update available` banner. When the user clicks on it you can force the update on all clients.
+
+![update-ready](https://user-images.githubusercontent.com/50018888/130429206-265106cd-167e-4bc7-b65f-7922172f3146.png)
+
 ## Properties
 _The `ServiceWorkerUpdateListener` interface inherits properties from its parent, [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget)._
 
